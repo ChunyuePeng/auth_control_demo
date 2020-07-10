@@ -9,7 +9,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="role_ids" jdbcType="VARCHAR" property="roleIds" />
+    <result column="role_ids" jdbcType="VARCHAR" property="roleIds" typeHandler="com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -35,6 +35,25 @@
                   and ${criterion.condition}
                   <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.roleIdsCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler} and #{criterion.secondValue,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler}
                   </foreach>
                 </when>
               </choose>
@@ -68,6 +87,25 @@
                   and ${criterion.condition}
                   <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.roleIdsCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler} and #{criterion.secondValue,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler}
                   </foreach>
                 </when>
               </choose>
@@ -112,7 +150,7 @@
       distinct
     </if>
     <choose>
-      <when test="selective != null and selective.length > 0">
+      <when test="selective != null and selective.length &gt; 0">
         <foreach collection="selective" item="column" separator=",">
           ${column.aliasedEscapedColumnName}
         </foreach>
@@ -146,7 +184,7 @@
     -->
     select
     <choose>
-      <when test="selective != null and selective.length > 0">
+      <when test="selective != null and selective.length &gt; 0">
         <foreach collection="selective" item="column" separator=",">
           ${column.aliasedEscapedColumnName}
         </foreach>
@@ -186,7 +224,7 @@
     </selectKey>
     insert into admin (username, `password`, role_ids
       )
-    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{roleIds,jdbcType=VARCHAR}
+    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{roleIds,jdbcType=VARCHAR,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.chunyue.auth_control_demo.db.domain.Admin">
@@ -217,7 +255,7 @@
         #{password,jdbcType=VARCHAR},
       </if>
       <if test="roleIds != null">
-        #{roleIds,jdbcType=VARCHAR},
+        #{roleIds,jdbcType=VARCHAR,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler},
       </if>
     </trim>
   </insert>
@@ -248,7 +286,7 @@
         `password` = #{record.password,jdbcType=VARCHAR},
       </if>
       <if test="record.roleIds != null">
-        role_ids = #{record.roleIds,jdbcType=VARCHAR},
+        role_ids = #{record.roleIds,jdbcType=VARCHAR,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler},
       </if>
     </set>
     <if test="_parameter != null">
@@ -264,7 +302,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       username = #{record.username,jdbcType=VARCHAR},
       `password` = #{record.password,jdbcType=VARCHAR},
-      role_ids = #{record.roleIds,jdbcType=VARCHAR}
+      role_ids = #{record.roleIds,jdbcType=VARCHAR,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -283,7 +321,7 @@
         `password` = #{password,jdbcType=VARCHAR},
       </if>
       <if test="roleIds != null">
-        role_ids = #{roleIds,jdbcType=VARCHAR},
+        role_ids = #{roleIds,jdbcType=VARCHAR,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -296,7 +334,7 @@
     update admin
     set username = #{username,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=VARCHAR},
-      role_ids = #{roleIds,jdbcType=VARCHAR}
+      role_ids = #{roleIds,jdbcType=VARCHAR,typeHandler=com.chunyue.auth_control_demo.mybatis.JsonIntegerArrayTypeHandler}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="com.chunyue.auth_control_demo.db.domain.AdminExample" resultMap="BaseResultMap">
@@ -322,7 +360,7 @@
     -->
     select
     <choose>
-      <when test="selective != null and selective.length > 0">
+      <when test="selective != null and selective.length &gt; 0">
         <foreach collection="selective" item="column" separator=",">
           ${column.aliasedEscapedColumnName}
         </foreach>
