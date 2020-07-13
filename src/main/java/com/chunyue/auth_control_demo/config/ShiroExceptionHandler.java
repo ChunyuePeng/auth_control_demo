@@ -1,10 +1,10 @@
 package com.chunyue.auth_control_demo.config;
 
+import com.chunyue.auth_control_demo.util.ResponseUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
-import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ControllerAdvice;

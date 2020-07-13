@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface AdminService {
     List<Admin> findAdmin(String username);
+
+    void updateById(Admin admin);
 }

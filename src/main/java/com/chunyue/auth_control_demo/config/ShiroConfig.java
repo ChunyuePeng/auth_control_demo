@@ -1,5 +1,6 @@
 package com.chunyue.auth_control_demo.config;
 
+import com.chunyue.auth_control_demo.filter.CorsAuthenticationFilter;
 import com.chunyue.auth_control_demo.shiro.AdminAuthorizingRealm;
 import com.chunyue.auth_control_demo.shiro.AdminWebSessionManager;
 import org.apache.shiro.mgt.SecurityManager;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -40,6 +42,10 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSuccessUrl("/admin/auth/index");
         shiroFilterFactoryBean.setUnauthorizedUrl("/admin/auth/403");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        //自定义过滤器
+        Map<String, Filter> filterMap = new LinkedHashMap<>();
+        filterMap.put("corsAuthenticationFilter", new CorsAuthenticationFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
         return shiroFilterFactoryBean;
     }
 
